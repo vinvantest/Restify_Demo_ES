@@ -1,0 +1,183 @@
+{
+  "template" : "tran-*",
+  "order" : 9,
+  "settings": {
+    "index": {
+      "number_of_shards" : 5,
+      "number_of_replicas" : 2,
+      "analysis": {
+        "analyzer": {
+          "analyzer_keyword": {
+            "tokenizer": "keyword",
+            "filter": "lowercase"
+          }
+        }
+      }
+    }
+  },
+  "_default_": {
+         "date_detection": false,
+         "_all": { "enabled": false },
+         "dynamic_templates": [
+            {
+               "dates_default_template": {
+                  "match": ".*Date|date",
+                  "match_pattern": "regex",
+                  "mapping": {
+                     "type": "date"
+                  }
+               }
+            }
+         ]
+  },
+  "aliases": { "global_alisas_for_search_customer_index": {},
+               "global_alisas_for_write_customer_index": {}
+             },
+  "dynamic_templates":
+  [
+     {
+        "url_feild_template_name":
+        {
+           "match": "*_url",
+           "match_mapping_type": "text",
+           "mapping":
+           {
+              "type": "text",
+              "index": "not_analyzed"
+           }
+        }
+     },
+     {
+        "en_feild_template_name":
+        {
+           "match": "*_en",
+           "match_mapping_type": "text",
+           "mapping": { "type": "text", "analyzer": "english" }
+        }
+     },
+     {
+        "de_feild_template_name":
+        {
+           "match": "*_de",
+           "match_mapping_type": "text",
+           "mapping": { "type": "text", "analyzer": "german" }
+        }
+     },
+     {
+        "it_feild_template_name": {
+           "match": "*_it",
+           "match_mapping_type": "text",
+           "mapping": {
+              "type": "text",  "analyzer": "italian" }
+        }
+     },
+     {
+        "fr_feild_template_name":
+        {
+           "match": "*_fr",
+           "match_mapping_type": "text",
+           "mapping": { "type": "text", "analyzer": "french"}
+        }
+     },
+     {
+        "es_feild_template_name":
+        {
+           "match": "*_name",
+           "match_mapping_type": "text",
+           "mapping": { "type": "text", "analyzer": "spanish" }
+        }
+     },
+     {
+       "integers_feild_template_name": {
+           "match_mapping_type": "integer",
+           "mapping": {
+           "type": "long"
+           }
+       }
+     },
+     {
+        "dates_feild_template_name": {
+           "match": ".*Date|date",
+           "match_pattern": "regex",
+           "mapping": {
+              "type": "date"
+           }
+        }
+     },
+     {
+       "strings_feild_not_analysed_tname": {
+             "match_mapping_type": "text",
+             "path_match": "*",
+             "mapping": {
+                   "type": "text",
+                   "fields": { "raw": { "type":  "keyword", "index": "not_analyzed", "ignore_above": 256 } }
+                 }
+        }
+      },
+    {
+        "text_feild_template_name":
+        {
+           "match": "*",
+           "path_match": "*",
+           "match_mapping_type": "text",
+           "mapping": { "type": "text", "analyzer": "standard" }
+        }
+     },
+     {
+        "wildcard_name_feild_template_name":
+        {
+           "match": "*_name",
+           "match_mapping_type": "text",
+           "mapping":
+           {
+              "type": "text",
+              "analyzer": "standard",
+              "fields": { "raw": { "type": "keyword", "index": "not_analyzed" } }
+           }
+        }
+     },
+     {
+        "wildcard_UUID_field_template_name" :
+        {
+            "match" : "*_guid",
+            "match_mapping_type" : "text",
+            "mapping" : { "type" : "keyword", "index" : "not_analyzed"}
+        }
+      }
+   ],
+  "_index" : {
+    "enabled" : true,
+    "store" : "yes"
+  },
+  "_id" : {
+    "index" : "not_analyzed",
+    "store" : "yes"
+  },
+  "_all" : {
+    "enabled" : "false"
+  },
+  "dynamic" : "strict",
+  "mappings": {
+    "type_name" : {
+          "date_detection": false,
+          "properties"    : {
+               "customer_eid_for_alias" : { "type" : "keyword" },
+               "customer_name"          : {
+                                               "type" : "nested",
+                                               "include_in_parent": true,
+                                               "properties" : {
+                                                  "first_name"  : {"type" : "text", "analyzer" : "analyzer_keyword" },
+                                                  "middle_name" : {"type" : "text", "analyzer" : "analyzer_keyword" },
+                                                  "last_name"   : {"type" : "text", "analyzer" : "analyzer_keyword" }
+                                                  }
+                                            },
+               "transaction_type"         : { "type" : "keyword" },
+               "transaction_new"          : { "type" : "boolean", "index" : "not_analyzed" },
+               "status"                   : { "type" : "keyword" },
+               "transaction_desc"         : { "type" : "text", "fields": {"raw": {"type":"keyword"}}},
+               "created_at_date" : { "type" : "date",  "index" : "not_analyzed" },
+               "updated_at_date" : { "type" : "date",  "index" : "not_analyzed" }
+             }
+           }
+  }
+}

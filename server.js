@@ -14,7 +14,7 @@ var client = require('./controllers/elasticConnection.js');
 setupController(server, restify, plugins, restifyValidator);
 
 function checkElasticSearchHealth(){
-client.cluster.health({},function(err,resp,status) {  
+client.cluster.health({},function(err,resp,status) {
   console.log("-- Client Health --",resp);
 });
 }
@@ -34,11 +34,10 @@ requireAndInit([
 	'./routes/createIndexMappingType.js',
 	'./routes/checkESCloud.js',
 	'./routes/addTypeToIndex.js',
+  './routes/addTranTemplate.js',
     // Assuming this list gets long
 ]);
 
 server.listen(8080, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
-
-
