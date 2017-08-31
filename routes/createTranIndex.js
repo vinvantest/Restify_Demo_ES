@@ -6,7 +6,7 @@ var esClient = require('../controllers/elasticConnection.js');
 function createTranIndex(server) {
     server.post('/createTranIndex/:indexName', function (req, res, next)
 		{
-		 req.assert('indexName', 'indexName is required and must be lowercase alphanumeric').notEmpty();//.isLowercase();
+		 req.assert('indexName', 'indexName is required and must be lowercase').notEmpty();//.isLowercase();
 		 const errors = req.validationErrors();
 		  if(errors) {
 			helper.failure(res,next,errors[0],401);

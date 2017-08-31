@@ -3,11 +3,11 @@
 var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
 
-function getTranDataById(server) {
-  server.get('/getTranDataById/:indexAliasName', function (req, res, next)
+function getIndexDataById(server) {
+  server.get('/getIndexDataById/:indexAliasName', function (req, res, next)
 	{
-   console.log('Inside serer.post(getTranDataById)');
-   req.assert('indexAliasName', 'indexAliasName is required and must be alphanumeric string').notEmpty();//.isAlphanumeric();
+   console.log('Inside serer.post(getIndexDataById)');
+   req.assert('indexAliasName', 'indexAliasName is required and must be lowercase string').notEmpty();//.isAlphanumeric();
    const errors = req.validationErrors();
    if(errors) {
        helper.failure(res,next,errors[0],401);
@@ -29,8 +29,7 @@ function getTranDataById(server) {
 
    var documentId = req.query.id;
    console.log('docmentId to be found in index ['+indexAliasName+'] -'+documentId);
-
-   var res_msg = 'VV Error - Document Not Indexed in ['+indexAliasName+']';
+   var res_msg = 'Error - Document Not Indexed in ['+indexAliasName+']';
 	 console.log('Checking if ['+indexAliasName+'] Exists');
 
    esClient.indices.exists({index: indexAliasName})
@@ -41,7 +40,6 @@ function getTranDataById(server) {
               { //index exists
                 console.log('Index ['+indexAliasName+'] exists in ElasticSearch. Exists value is ->'+JSON.stringify(exists));
                 res_msg = 'Index ['+indexAliasName+'] exists in ElasticSearch. Exists value is ->'+JSON.stringify(exists);
-
                 var queryBody = {
                       query : {
                         match : {
@@ -49,7 +47,6 @@ function getTranDataById(server) {
                         }
                       }
                 };
-
                 //now search for the record
                 esClient.search({index: indexAliasName, type: 'type_name', body: queryBody})
                   .then(function (resp){
@@ -62,7 +59,6 @@ function getTranDataById(server) {
                     res_msg = 'Error: Index ['+indexAliasName+'] exists in ElasticSearch but search() error -'+JSON.stringify(error);
                      //esClient.close();
                     helper.failure(res,next,res_msg,500);
-
                   }); //end search()
               }//end if index Exists
               else {
@@ -76,4 +72,4 @@ function getTranDataById(server) {
     }); //end server.post()
 };
 
-module.exports = getTranDataById;
+module.exports = getIndexDataById;

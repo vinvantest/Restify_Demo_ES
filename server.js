@@ -37,8 +37,9 @@ requireAndInit([
   './routes/addTranTemplate.js',
   './routes/createTranIndex.js',
   './routes/addDataTran.js',
-  './routes/getTranDataCount.js',
-  './routes/getTranDataById.js',
+  './routes/getIndexDataCount.js',
+  './routes/getIndexDataById.js',
+  './routes/createIndexAliasByRounting.js',
     // Assuming this list gets long
 ]);
 

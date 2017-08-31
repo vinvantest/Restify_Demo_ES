@@ -21,7 +21,7 @@ function addTranTemplate(server) {
    console.log('template.json file Loaded !');
 
    //console.log(JSON.stringify(tranTemplateBody));
-   var res_msg = 'VV Error - Template Not Created !';
+   var res_msg = 'Error - Template Not Created !';
 	 console.log('Checking if template Exists');
 
 	 esClient.indices.getTemplate({name: templateName})

@@ -3,11 +3,11 @@
 var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
 
-function getTranDataCount(server) {
-  server.get('/getTranDataCount/:indexAliasName', function (req, res, next)
+function getIndexDataCount(server) {
+  server.get('/getIndexDataCount/:indexAliasName', function (req, res, next)
 	{
-   console.log('Inside serer.post(addDataTran)');
-   req.assert('indexAliasName', 'indexAliasName is required and must be alphanumeric string').notEmpty();//.isAlphanumeric();
+   console.log('Inside serer.post(getIndexDataCount)');
+   req.assert('indexAliasName', 'indexAliasName is required and must be lowercase string').notEmpty();//.isAlphanumeric();
    const errors = req.validationErrors();
    if(errors) {
        helper.failure(res,next,errors[0],401);
@@ -15,7 +15,7 @@ function getTranDataCount(server) {
    }
    console.log('req.params.indexAliasName = ' + JSON.stringify(req.params.indexAliasName));
    var indexAliasName = req.params.indexAliasName;
-   var res_msg = 'VV Error - Document Not Indexed in ['+indexAliasName+']';
+   var res_msg = 'Error - Document Not Indexed in ['+indexAliasName+']';
 	 console.log('Checking if ['+indexAliasName+'] Exists');
 
    esClient.indices.exists({index: indexAliasName})
@@ -50,4 +50,4 @@ function getTranDataCount(server) {
     }); //end server.post()
 };
 
-module.exports = getTranDataCount;
+module.exports = getIndexDataCount;

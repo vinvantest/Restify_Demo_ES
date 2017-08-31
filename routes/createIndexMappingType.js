@@ -4,12 +4,12 @@ var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
 
 function createIndexMappingType(server) {
-    server.post('/createIndexMappingType', function (req, res, next) 
+    server.post('/createIndexMappingType', function (req, res, next)
 		{
-		 req.assert('indexName', 'indexName is required and must be lowercase alphanumeric string').notEmpty().isAlphanumeric();//.isLowercase();
+		 req.assert('indexName', 'indexName is required and must be lowercase').notEmpty();//.isLowercase();
 		 req.assert('typName', 'typeName is required and must be alphanumeric string').notEmpty().isAlphanumeric();
 		 req.assert('mapping', 'payload is required and not be empty or null').notEmpty();
-		 	 
+
 		  const errors = req.validationErrors();
 		  if(errors) {
 			helper.failure(res,next,errors[0],401);
@@ -31,7 +31,7 @@ function createIndexMappingType(server) {
 		 var indexName = req.params.indexName;
 		 var typeName = req.params.typeName;
 		 var res_msg = 'Index not created';
-		
+
 	 console.log('Checking if index Exists('+indexName+')');
 	 esClient.indices.exists(indexName)
 		 .then(function (resp) {//index exists
@@ -49,7 +49,7 @@ function createIndexMappingType(server) {
 						esClient.indices.putMapping({
 									index: indexName,
 									type: typeName,  //docType,
-									body: //payload //below not required if JSON object passed to create mapping 
+									body: //payload //below not required if JSON object passed to create mapping
 										{
 										properties: {
 											title: { type: "string" },
@@ -70,7 +70,7 @@ function createIndexMappingType(server) {
 	     }, function (err){ //index dosen't exist. Create one.
 			console.log('Creating ['+indexName+'] now! Error value is ->'+JSON.stringify(err));
 			res_msg = 'Creating ['+indexName+'] now!'+JSON.stringify(err);
-			
+
 																		/*esClient.index({
 																		  index: indexName,
 																		  type: 'posts',
@@ -90,7 +90,7 @@ function createIndexMappingType(server) {
 						esClient.indices.putMapping({
 									index: indexName,
 									type: typeName, //docType,
-									body: //paylod //below not required if JSON object passed to create mapping 
+									body: //paylod //below not required if JSON object passed to create mapping
 										{
 										properties: {
 											title: { type: "string" },
@@ -118,7 +118,7 @@ function createIndexMappingType(server) {
 				/*.catch(error) {
 						console.log('Error: Unexpected error occured in create() call ->'+error);
 						res_msg = 'Error: creating index ['+indexName+'] -> ' +error;
-				};*/ 
+				};*/
 	    });//end then - indices.exists()
 		/*.catch(error){
 			console.log('Error: Unexpected error occured in create() call ->'+error);

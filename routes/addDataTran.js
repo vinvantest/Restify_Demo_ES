@@ -15,7 +15,7 @@ function addDataTran(server) {
    }
    console.log('req.params.indexAliasName = ' + JSON.stringify(req.params.indexAliasName));
    var indexAliasName = req.params.indexAliasName;
-   var res_msg = 'VV Error - Document Not Indexed in ['+indexAliasName+']';
+   var res_msg = 'Error - Document Not Indexed in ['+indexAliasName+']';
 	 console.log('Checking if ['+indexAliasName+'] Exists');
 
    esClient.indices.exists({index: indexAliasName})
