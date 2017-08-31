@@ -24,7 +24,9 @@
                   "match": ".*Date|date",
                   "match_pattern": "regex",
                   "mapping": {
-                     "type": "date"
+                     "type": "date",
+                     "format": "yyyy-MM-ddTHH:mm:ss.SSSZ",
+                     "index": "not_analyzed"
                   }
                }
             }

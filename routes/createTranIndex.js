@@ -3,10 +3,10 @@
 var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
 
-function createIndex(server) {
-    server.post('/createIndex/:indexName', function (req, res, next) 
+function createTranIndex(server) {
+    server.post('/createTranIndex/:indexName', function (req, res, next)
 		{
-		 req.assert('indexName', 'indexName is required and must be lowercase alphanumeric').notEmpty().isAlphanumeric();//.isLowercase();
+		 req.assert('indexName', 'indexName is required and must be lowercase alphanumeric').notEmpty();//.isLowercase();
 		 const errors = req.validationErrors();
 		  if(errors) {
 			helper.failure(res,next,errors[0],401);
@@ -26,8 +26,10 @@ function createIndex(server) {
 		  }//for loop end
 
 		 var indexName = req.params.indexName;
+     indexName = indexName.replace(/[^a-zA-Z0-9_-]/g,'_').replace(/_{2,}/g,'_').toLowerCase();
+     console.log('var indexName after conversion = [' + indexName + ']');
 		 var res_msg = 'Index not created';
-		
+
 	 console.log('Checking if index Exists('+indexName+')');
 	 esClient.indices.exists(indexName)
 		 .then(function (resp) {//index exists
@@ -36,40 +38,35 @@ function createIndex(server) {
 				//check if mapping exists
 				esClient.indices.getMapping({index: indexName})
 					.then(function (response) {
-							res_msg = 'Mapping ['+indexName+'] already exists. Start creating Types.';
-							esClient.close();
+							res_msg = 'Mapping ['+indexName+'] already exists. Start creating documents. ' + JSON.stringify(response);
+							//esClient.close(); //close it in lambda only
 							helper.success(res,next,res_msg);
 					},function (error){//mapping doesn't exists
 						console.log('Mapping ['+indexName+'] Not created. Before use create mapping' + JSON.stringify(error));
 						res_msg = 'Mapping ['+indexName+'] Not created. Before use create mapping'+ JSON.stringify(error);
 						//context.succeed(responder.success(JSON.stringify(res_msg)));
-						esClient.close();
+						//esClient.close(); //close it in lambda only
 						helper.success(res,next,res_msg);
 				});//end indices.getMapping()
 	     }, function (err){ //index dosen't exist. Create one.
-			console.log('Creating ['+indexName+'] now! Error value is ->'+JSON.stringify(err));
+			console.log('Index does not Exists! ... Creating ['+indexName+'] now! Error value is ->'+JSON.stringify(err));
 			res_msg = 'Creating ['+indexName+'] now!'+JSON.stringify(err);
 			esClient.indices.create({index: indexName})
 				.then(function (response) {
 					    console.log('Index ['+indexName+'] Created! Before use create mapping -> '+ JSON.stringify(response));
-				        //now create mapping
-						res_msg = 'Index ['+indexName+'] Created with mapping. Before use create mapping.';
+						  res_msg = 'Index ['+indexName+'] Created with standard of template mapping.';
 						//context.succeed(responder.success(JSON.stringify(res_msg)));
-						esClient.close();
+						//esClient.close(); //close it in lambda only
 						helper.success(res,next,res_msg);
 					}, function (error) {
-						console.log('Error: creating index ['+indexName+'] -> ' +JSON.stringify(err));
-						res_msg = 'Error: creating index ['+indexName+']'+JSON.stringify(err);
+						console.log('Error: creating index ['+indexName+'] -> ' +JSON.stringify(error));
+						res_msg = 'Error: creating index ['+indexName+']'+JSON.stringify(error);
 						//context.fail(responder.internalServerError('Error: elasticsearch cannot create index and put mapping! -> '+error));
-						esClient.close();
+						//esClient.close(); //close it in lambda only
 						helper.failure(res,next,res_msg + ' - ' + error,500);
 					});
 	    });//end then - indices.exists()
-
-	 esClient.close();
-     helper.success(res,next,res_msg);
-     return next();
     });
 };
 
-module.exports = createIndex;
+module.exports = createTranIndex;

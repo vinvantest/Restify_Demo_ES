@@ -29,12 +29,16 @@ function requireAndInit(handlers) {
 }
 
 requireAndInit([
-    './routes/getUsers.js',
-    './routes/getApps.js',
+  './routes/getUsers.js',
+  './routes/getApps.js',
 	'./routes/createIndexMappingType.js',
 	'./routes/checkESCloud.js',
 	'./routes/addTypeToIndex.js',
   './routes/addTranTemplate.js',
+  './routes/createTranIndex.js',
+  './routes/addDataTran.js',
+  './routes/getTranDataCount.js',
+  './routes/getTranDataById.js',
     // Assuming this list gets long
 ]);
 
