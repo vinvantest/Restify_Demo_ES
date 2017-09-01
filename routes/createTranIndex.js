@@ -30,6 +30,10 @@ function createTranIndex(server) {
      console.log('var indexName after conversion = [' + indexName + ']');
 		 var res_msg = 'Index not created';
 
+  //check if index creation is within data model
+  if(!indexName.includes('tran'))
+    helper.failure(res,next,res_msg + ' - ' + 'no template exists for the index name',404);
+
 	 console.log('Checking if index Exists('+indexName+')');
 	 esClient.indices.exists(indexName)
 		 .then(function (resp) {//index exists
@@ -55,6 +59,8 @@ function createTranIndex(server) {
 				.then(function (response) {
 					    console.log('Index ['+indexName+'] Created! Before use create mapping -> '+ JSON.stringify(response));
 						  res_msg = 'Index ['+indexName+'] Created with standard of template mapping.';
+              /* Add alias to indexName before inserting documents */
+              //you won't know what alias to use in the index ... do it at document insertion
 						//context.succeed(responder.success(JSON.stringify(res_msg)));
 						//esClient.close(); //close it in lambda only
 						helper.success(res,next,res_msg);

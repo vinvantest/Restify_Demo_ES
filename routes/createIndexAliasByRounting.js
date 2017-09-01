@@ -145,8 +145,8 @@ function createIndexAliasByRounting(server) {
               }//end if index Exists
               else {
                 //index dosen't exist
-           			console.log('Index ['+indexName+'] does not exist! Error value is ->'+JSON.stringify(err));
-           			res_msg = 'Index ['+indexName+'] does not exists!'+JSON.stringify(err);
+           			console.log('Index ['+indexName+'] does not exist! Error value is ->'+JSON.stringify(exists));
+           			res_msg = 'Index ['+indexName+'] does not exists!'+JSON.stringify(exists);
                  //esClient.close();
                  helper.failure(res,next,res_msg,404);
               }//end else index exists

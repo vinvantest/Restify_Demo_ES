@@ -31,7 +31,7 @@ function addDataDirectToTranIndex(server) {
                       res_msg = 'Mapping ['+indexAliasName+'] already exists. Start calling Index.save()';
                       //insert document from here
                       console.log('loading sample_data_tran_v1.json file ....');
-                      var tranDataBody = require('../sample_data_tran_v1.json');
+                      var tranDataBody = require('../test_data/sample_data_tran_v1.json');
                       console.log('sample_data_tran_v1.json file Loaded !');
                       esClient.index({
                             index: indexAliasName,

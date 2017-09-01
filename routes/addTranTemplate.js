@@ -17,7 +17,7 @@ function addTranTemplate(server) {
    var templateName = req.params.templateName;
 
    console.log('loading template.json file ....');
-	 var tranTemplateBody = require('../tran_template_index_v1.json');
+	 var tranTemplateBody = require('../config/templates/tran_template_index_v1.json');
    console.log('template.json file Loaded !');
 
    //console.log(JSON.stringify(tranTemplateBody));

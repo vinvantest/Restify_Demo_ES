@@ -46,7 +46,7 @@ function addDataViaAlias(server) {
                       res_msg = 'Mapping ['+indexAliasName+'] already exists. Start calling Index.save()';
                       //insert document from here
                       console.log('loading sample_data_tran_v1.json file ....');
-                      var tranDataBody = req.body; //require('../sample_data_tran_v1.json');
+                      var tranDataBody = req.body; //require('../test_data/sample_data_tran_v1.json');
                       console.log('sample_data_tran_v1.json file Loaded !');
                       esClient.index({
                             index: indexAliasName,
