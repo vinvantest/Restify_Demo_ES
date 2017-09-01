@@ -7,6 +7,9 @@ function addDataViaAlias(server) {
   server.post('/addDataViaAlias/:indexAliasName', function (req, res, next)
 	{
    console.log('Inside serer.post(addDataViaAlias)');
+   console.log('---******************--------');
+   console.log(req.body);
+   console.log('---******************--------');
    req.assert('indexAliasName', 'indexAliasName is required and must be alphanumeric string').notEmpty();//.isAlphanumeric();
    const errors = req.validationErrors();
    if(errors) {
@@ -15,6 +18,18 @@ function addDataViaAlias(server) {
    }
    console.log('req.params.indexAliasName = ' + JSON.stringify(req.params.indexAliasName));
    var indexAliasName = req.params.indexAliasName;
+   //get Query params
+   const queryParams = req.getQuery();
+   console.log('queryParams passed is -> {' + JSON.stringify(queryParams) + '} '
+         + 'where first param is: ' + JSON.stringify(req.query.first)
+         + 'second param is: ' + JSON.stringify(req.query.second)
+         + 'third param is: ' + JSON.stringify(req.query.third)
+       );
+   //you can loop in the query object
+   for(const field in req.query){
+   console.log('Field['+field+'] = '+req.query[field]);
+   }//for loop end
+
    var res_msg = 'Error - Document Not Indexed in ['+indexAliasName+']';
 	 console.log('Checking if ['+indexAliasName+'] Exists');
 
@@ -31,7 +46,7 @@ function addDataViaAlias(server) {
                       res_msg = 'Mapping ['+indexAliasName+'] already exists. Start calling Index.save()';
                       //insert document from here
                       console.log('loading sample_data_tran_v1.json file ....');
-                      var tranDataBody = require('../sample_data_tran_v1.json');
+                      var tranDataBody = req.body; //require('../sample_data_tran_v1.json');
                       console.log('sample_data_tran_v1.json file Loaded !');
                       esClient.index({
                             index: indexAliasName,
