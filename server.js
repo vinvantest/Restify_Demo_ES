@@ -36,10 +36,13 @@ requireAndInit([
 	'./routes/addTypeToIndex.js',
   './routes/addTranTemplate.js',
   './routes/createTranIndex.js',
-  './routes/addDataTran.js',
+  './routes/addDataDirectToTranIndex.js',
   './routes/getIndexDataCount.js',
   './routes/getIndexDataById.js',
   './routes/createIndexAliasByRounting.js',
+  './routes/swapAliasToIndex.js',
+  './routes/getAliasDataCountForIndex.js',
+  './routes/addDataViaAlias.js',
     // Assuming this list gets long
 ]);
 

@@ -3,10 +3,10 @@
 var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
 
-function addDataTran(server) {
-  server.post('/addDataTran/:indexAliasName', function (req, res, next)
+function addDataDirectToTranIndex(server) {
+  server.post('/addDataDirectToTranIndex/:indexAliasName', function (req, res, next)
 	{
-   console.log('Inside serer.post(addDataTran)');
+   console.log('Inside serer.post(addDataDirectToTranIndex)');
    req.assert('indexAliasName', 'indexAliasName is required and must be alphanumeric string').notEmpty();//.isAlphanumeric();
    const errors = req.validationErrors();
    if(errors) {
@@ -68,4 +68,4 @@ function addDataTran(server) {
     }); //end server.post()
 };
 
-module.exports = addDataTran;
+module.exports = addDataDirectToTranIndex;
