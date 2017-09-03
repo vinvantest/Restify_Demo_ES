@@ -7,13 +7,33 @@
       "number_of_replicas" : 2,
       "analysis": {
         "analyzer": {
-          "analyzer_keyword": {
-            "tokenizer": "keyword",
-            "filter": "lowercase"
-          }
+              "filter": {
+                  "autocomplete_filter": {
+                      "type":     "edge_ngram",
+                      "min_gram": 1,
+                      "max_gram": 20
+                  }
+              },
+              "analyzer_keyword": {
+                "tokenizer": "keyword",
+                "filter": "lowercase"
+              },
+              "autocomplete_analyser" : {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": ["lowercase","autocomplete_filter"]
+              },
+              "nGram_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "whitespace",
+                  "filter": [ "lowercase", "asciifolding", "nGram_filter"]
+              },
+              "whitespace_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "whitespace",
+                  "filter": ["lowercase", "asciifolding"]
+              }
         }
-      }
-    }
   },
   "_default_": {
          "date_detection": false,
@@ -32,8 +52,8 @@
             }
          ]
   },
-  "aliases": { "global_alisas_for_search_customer_index": {},
-               "global_alisas_for_write_customer_index": {}
+  "aliases": { "global_alisas_for_search_transaction_index": {},
+               "global_alisas_for_write_transaction_index": {}
              },
   "dynamic_templates":
   [
@@ -176,7 +196,15 @@
                "transaction_type"         : { "type" : "keyword" },
                "transaction_new"          : { "type" : "boolean", "index" : "not_analyzed" },
                "status"                   : { "type" : "keyword" },
-               "transaction_desc"         : { "type" : "text", "fields": {"raw": {"type":"keyword"}}},
+               "transaction_desc"         : { "type" : "text",
+                                              "fields": {
+                                                    "raw": {"type":"keyword"},
+                                                    "auto_customer_name" : {
+                                                            "type" : "text",
+                                                            "index_analyzer" : "autocomplete_analyser",
+                                                            "search_analyzer" : "standard"}
+                                                        }
+                                            },
                "created_at_date" : { "type" : "date",  "index" : "not_analyzed" },
                "updated_at_date" : { "type" : "date",  "index" : "not_analyzed" }
              }

@@ -10,6 +10,7 @@
   "author": "vinayak vanarse",
   "license": "MIT",
   "dependencies": {
+    "elastic-builder": "^1.1.0",
     "elasticsearch": "^13.3.1",
     "restify": "^5.2.0",
     "restify-plugins": "^1.6.0",

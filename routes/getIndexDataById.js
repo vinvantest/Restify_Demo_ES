@@ -2,6 +2,7 @@
 
 var helper = require('../helper/helperFunctions.js');
 var esClient = require('../controllers/elasticConnection.js');
+var queryBuilder = require('elastic-builder');
 
 function getIndexDataById(server) {
   server.get('/getIndexDataById/:indexAliasName', function (req, res, next)
